@@ -1,4 +1,7 @@
 from tkinter import *
+
+from database import DB
+from guessing import Game
 from rd_button import RdButton as rd_btn
 from tkinter import messagebox as mb
 
@@ -15,7 +18,6 @@ score_text.place(x=650, y=40)
 Label(text="Best scores", font=("Arial", 20)).place(x=50, y=50)
 listbox = Listbox(font=("Arial", 15), height=15, width=15)
 listbox.place(x=50, y=100)
-
 
 var = IntVar()
 var.set(0)
@@ -35,6 +37,9 @@ i_mode.set(-1)
 desc = Label(font=("Arial", 15))
 desc.place(x=280, y=280)
 
+hint = Label(font=("Arial", 15))
+hint.place(x=290, y=520)
+
 Label(text="""EASY - the number range is selected 0 - 10
     MEDIUM - the number range is selected 0 - 20
 HARD - the number range is selected 0 - 30""",
@@ -48,11 +53,13 @@ def start_game():
     if i_mode.get() == -1:
         mb.showerror("Error", "Change the mode")
     else:
+        game = Game(i_mode.get(), username)
         Label(text=username + ", guess number", font=("Arial", 15)).place(x=280, y=350)
         user_entry.delete(0, END)
         guess_entry = Entry(font=("Arial", 20))
         guess_entry.place(x=280, y=400)
-        Button(text="Guess!!!", font=("Arial", 20), width=17).place(x=290, y=450)
+        Button(text="Guess!!!", font=("Arial", 20), width=17,
+               command=lambda: game.guess(int(guess_entry.get()), score_text, hint)).place(x=290, y=450)
 
 
 def radio_check(mode):
@@ -64,5 +71,9 @@ def radio_check(mode):
     if mode == "hard":
         i_mode.set(3)
 
+
+db = DB()
+for item in db.select_value():
+    listbox.insert(END, f"{item[0]}: {item[1]}")
 
 screen.mainloop()
