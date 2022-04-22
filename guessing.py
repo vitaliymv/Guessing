@@ -52,3 +52,5 @@ class Game:
         self.rand_number = sel_num(self.mode)
         score_text.configure(text="Score: " + str(self.score))
         hint.configure(text="")
+
+

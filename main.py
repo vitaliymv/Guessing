@@ -76,4 +76,8 @@ db = DB()
 for item in db.select_value():
     listbox.insert(END, f"{item[0]}: {item[1]}")
 
+
+if db.return_count() > 10:
+    db.delete_equal_zero()
+
 screen.mainloop()

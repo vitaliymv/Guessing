@@ -32,6 +32,23 @@ class DB:
         except Error as e:
             print(f"The error '{e}' occurred")
 
+    def delete_equal_zero(self):
+        delete_query = "DELETE FROM guessing WHERE score=0"
+        self.create_connection(delete_query)
+
+    @staticmethod
+    def return_count():
+        conn = sqlite3.connect("result.db")
+        cur = conn.cursor()
+        count_query = "SELECT COUNT(*) FROM guessing"
+        try:
+            cur.execute(count_query)
+            values = cur.fetchone()[0]
+            return values
+        except Error as e:
+            print(f"The error '{e}' occurred")
+
+
     @staticmethod
     def create_connection(query):
         conn = sqlite3.connect("result.db")
